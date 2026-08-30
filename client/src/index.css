@@ -1,0 +1,83 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    @apply border-espresso/20;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-charcoal text-cream;
+  }
+
+  h1, h2, h3, h4 {
+    @apply font-display;
+  }
+
+  /* Visible keyboard focus everywhere — accessibility floor */
+  a:focus-visible,
+  button:focus-visible,
+  input:focus-visible,
+  textarea:focus-visible,
+  select:focus-visible {
+    outline: 2px solid #C9A15A;
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer components {
+  /* Eyebrow label used above section headings, e.g. "OUR MENU" */
+  .eyebrow {
+    @apply text-xs tracking-widest2 uppercase text-copper font-medium;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-sm bg-copper px-8 py-3.5
+           text-sm font-medium tracking-wide text-charcoal transition-all duration-300
+           hover:bg-copper-light active:scale-[0.98];
+  }
+
+  .btn-outline {
+    @apply inline-flex items-center justify-center gap-2 rounded-sm border border-cream/40 px-8 py-3.5
+           text-sm font-medium tracking-wide text-cream transition-all duration-300
+           hover:border-cream hover:bg-cream/5 active:scale-[0.98];
+  }
+
+  .section-padding {
+    @apply px-6 py-24 md:px-12 md:py-32 lg:px-20;
+  }
+
+  .container-premium {
+    @apply mx-auto max-w-7xl;
+  }
+}
+
+@layer utilities {
+  /* Signature element: the "extraction ring" — a partial circular tick-arc
+     that nods to a pressure gauge / espresso crema swirl. Used on product
+     card hover and as a scroll-reveal accent. Draws itself via ringDraw. */
+  .extraction-ring {
+    stroke-dasharray: 264;
+    stroke-dashoffset: 264;
+  }
+  .group:hover .extraction-ring,
+  .extraction-ring--active {
+    animation: ringDraw 1.2s ease-out forwards;
+  }
+}
