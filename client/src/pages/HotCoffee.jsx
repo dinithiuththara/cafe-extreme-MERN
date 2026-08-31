@@ -2,6 +2,7 @@ import CategoryMenuPage from "./CategoryMenuPage.jsx";
 
 const HotCoffee = () => (
   <CategoryMenuPage
+    videoSrc="/videos/hot-coffee-brew.mp4"
     categorySlug="hot-coffee"
     title="Hot Coffee"
     tagline="Rich, bold espresso-based classics — brewed hot, served with intent."

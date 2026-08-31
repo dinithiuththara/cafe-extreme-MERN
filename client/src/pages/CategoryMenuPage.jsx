@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Coffee } from "lucide-react";
-import ScrollAnimationSection from "../components/menu/ScrollAnimationSection.jsx";
+import CategoryVideoIntro from "../components/menu/CategoryVideoIntro.jsx";
 import ProductCard from "../components/ProductCard.jsx";
 import { useProducts } from "../hooks/useProducts.js";
 
@@ -9,12 +9,12 @@ import { useProducts } from "../hooks/useProducts.js";
 // same ProductCard component as the rest of the site, so "Add to Cart"
 // flows into the existing CartContext -> Checkout -> Payment pipeline
 // (including "Pay by Card") automatically -- no separate checkout needed.
-const CategoryMenuPage = ({ categorySlug, title, tagline, otherCategory }) => {
+const CategoryMenuPage = ({ categorySlug, title, tagline, otherCategory, videoSrc }) => {
   const { products, loading, error } = useProducts({ category: categorySlug });
 
   return (
     <>
-      <ScrollAnimationSection title={title} />
+      <CategoryVideoIntro title={title} videoSrc={videoSrc} />
 
       <section className="section-padding">
         <div className="container-premium">
