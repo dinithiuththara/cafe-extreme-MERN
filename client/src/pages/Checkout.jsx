@@ -1,11 +1,9 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { CreditCard, Truck } from "lucide-react";
 import { useCart } from "../hooks/useCart.js";
 import { useAuth } from "../hooks/useAuth.js";
 import { orderService } from "../services/orderService.js";
-import { paymentService } from "../services/paymentService.js";
 import { formatPrice } from "../utils/format.js";
 
 const Checkout = () => {
@@ -19,7 +17,6 @@ const Checkout = () => {
     phone: user?.phone || "",
     address: "",
   });
-  const [paymentMethod, setPaymentMethod] = useState("cash-on-delivery");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -47,18 +44,9 @@ const Checkout = () => {
           selectedAddOns: item.selectedAddOns,
         })),
         deliveryAddress: form,
-        paymentMethod: paymentMethod === "card" ? "card" : "cash-on-delivery",
       };
 
-      // Step 1: create the order (always starts as pending payment).
       const order = await orderService.create(payload);
-
-      // Step 2: if paying by card, charge it immediately through the
-      // payment service. This runs in demo mode unless the server has
-      // real Stripe keys configured (see server/services/paymentService.js).
-      if (paymentMethod === "card") {
-        await paymentService.charge(order._id);
-      }
 
       clearCart();
       navigate(`/order-confirmation/${order._id}`);
@@ -137,42 +125,6 @@ const Checkout = () => {
                     className="w-full rounded-sm border border-cream/20 bg-transparent px-4 py-3 text-cream placeholder:text-cream/30 focus:border-copper focus:outline-none resize-none"
                   />
                 </div>
-              </div>
-            </div>
-
-            <div>
-              <h2 className="eyebrow mb-5">Payment Method</h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <button
-                  type="button"
-                  onClick={() => setPaymentMethod("cash-on-delivery")}
-                  className={`flex items-center gap-3 rounded-sm border p-4 text-left transition-colors ${
-                    paymentMethod === "cash-on-delivery"
-                      ? "border-copper bg-copper/10"
-                      : "border-cream/20 hover:border-cream/40"
-                  }`}
-                >
-                  <Truck size={20} className="text-copper" />
-                  <div>
-                    <p className="text-sm text-cream">Cash on Delivery</p>
-                    <p className="text-xs text-cream/40">Pay when your order arrives</p>
-                  </div>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setPaymentMethod("card")}
-                  className={`flex items-center gap-3 rounded-sm border p-4 text-left transition-colors ${
-                    paymentMethod === "card" ? "border-copper bg-copper/10" : "border-cream/20 hover:border-cream/40"
-                  }`}
-                >
-                  <CreditCard size={20} className="text-copper" />
-                  <div>
-                    <p className="text-sm text-cream">Pay by Card</p>
-                    <p className="text-xs text-cream/40">
-                      Processed via Stripe when configured, demo mode otherwise
-                    </p>
-                  </div>
-                </button>
               </div>
             </div>
           </div>
